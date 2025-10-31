@@ -1,0 +1,24 @@
+{
+  "folders": [
+    {
+      "name": "📧 EmailSenderDLL",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/obj": true,
+      "**/.vs": true,
+      "**/bin/Debug": true
+    },
+    "files.associations": {
+      "*.vb": "vb",
+      "*.vbproj": "xml"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-dotnettools.vscode-dotnet-runtime"
+    ]
+  }
+}
