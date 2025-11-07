@@ -16,7 +16,7 @@
     <Company>DAAM</Company>
     <Product>EmailSenderDLL</Product>
     <Description>DLL pour envoi d'emails via SendGrid avec 7 types de templates (Info, Erreur, Urgence, Succes, Alerte, Avertissement, Notification), support CC/BCC, signatures personnalisables et pièces jointes</Description>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

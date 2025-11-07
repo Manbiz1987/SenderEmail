@@ -270,7 +270,7 @@ Public Class EmailSender
     <div style='max-width: 600px; margin: 20px auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>
         <!-- Header Bleu -->
         <div style='background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%); padding: 30px; text-align: center;'>
-            <h1 style='color: white; margin: 0; font-size: 24px; font-weight: 600;'>ℹ️ Information</h1>
+            <h1 style='color: #ffffff !important; margin: 0; font-size: 24px; font-weight: 600;'>ℹ️ {sujet}</h1>
         </div>
         
         <!-- Contenu -->
@@ -324,7 +324,7 @@ Public Class EmailSender
     <div style='max-width: 600px; margin: 20px auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>
         <!-- Header Rouge -->
         <div style='background: linear-gradient(135deg, #f44336 0%, #c62828 100%); padding: 30px; text-align: center;'>
-            <h1 style='color: white; margin: 0; font-size: 24px; font-weight: 600;'>⚠️ Erreur</h1>
+            <h1 style='color: #ffffff !important; margin: 0; font-size: 24px; font-weight: 600;'>❌ {sujet}</h1>
         </div>
         
         <!-- Contenu -->
@@ -378,7 +378,7 @@ Public Class EmailSender
     <div style='max-width: 600px; margin: 20px auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>
         <!-- Header Orange -->
         <div style='background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); padding: 30px; text-align: center;'>
-            <h1 style='color: white; margin: 0; font-size: 24px; font-weight: 600;'>🚨 Urgent</h1>
+            <h1 style='color: #ffffff !important; margin: 0; font-size: 24px; font-weight: 600;'>⚡ {sujet}</h1>
         </div>
         
         <!-- Contenu -->
@@ -432,7 +432,7 @@ Public Class EmailSender
     <div style='max-width: 600px; margin: 20px auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>
         <!-- Header Vert -->
         <div style='background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%); padding: 30px; text-align: center;'>
-            <h1 style='color: white; margin: 0; font-size: 24px; font-weight: 600;'>✅ Succès</h1>
+            <h1 style='color: #ffffff !important; margin: 0; font-size: 24px; font-weight: 600;'>✅ {sujet}</h1>
         </div>
         
         <!-- Contenu -->
@@ -487,7 +487,7 @@ Public Class EmailSender
 <body style='margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;'>
     <div style='max-width: 600px; margin: 20px auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);'>
         <div style='background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%); padding: 30px; text-align: center;'>
-            <h1 style='margin: 0; color: white; font-size: 24px;'>🚨 {sujet}</h1>
+            <h1 style='margin: 0; color: #ffffff !important; font-size: 24px;'>🚨 {sujet}</h1>
         </div>
         <div style='padding: 30px;'>
             <div style='color: #333; font-size: 16px; line-height: 1.6; white-space: pre-line;'>
@@ -537,7 +537,7 @@ Public Class EmailSender
 <body style='margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;'>
     <div style='max-width: 600px; margin: 20px auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);'>
         <div style='background: linear-gradient(135deg, #f57f17 0%, #fbc02d 100%); padding: 30px; text-align: center;'>
-            <h1 style='margin: 0; color: white; font-size: 24px;'>⚠️ {sujet}</h1>
+            <h1 style='margin: 0; color: #ffffff !important; font-size: 24px;'>⚠️ {sujet}</h1>
         </div>
         <div style='padding: 30px;'>
             <div style='color: #333; font-size: 16px; line-height: 1.6; white-space: pre-line;'>
@@ -587,7 +587,7 @@ Public Class EmailSender
 <body style='margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;'>
     <div style='max-width: 600px; margin: 20px auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);'>
         <div style='background: linear-gradient(135deg, #7b1fa2 0%, #9c27b0 100%); padding: 30px; text-align: center;'>
-            <h1 style='margin: 0; color: white; font-size: 24px;'>🔔 {sujet}</h1>
+            <h1 style='margin: 0; color: #ffffff !important; font-size: 24px;'>🔔 {sujet}</h1>
         </div>
         <div style='padding: 30px;'>
             <div style='color: #333; font-size: 16px; line-height: 1.6; white-space: pre-line;'>

@@ -1,0 +1,137 @@
+╔════════════════════════════════════════════════════════════════╗
+║                 EmailSenderDLL v1.2.0                          ║
+║          Package de Distribution Complet                       ║
+╚════════════════════════════════════════════════════════════════╝
+
+📦 CONTENU DU PACKAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ EmailSenderDLL.dll (83 KB)
+   → Bibliothèque principale pour envoi d'emails via SendGrid
+
+✅ EmailSenderDLL.xml (4.9 KB)  
+   → Documentation IntelliSense (auto-complétion dans Visual Studio)
+
+✅ Newtonsoft.Json.dll (695 KB)
+   → Dépendance requise pour la sérialisation JSON
+
+✅ README.md (6.7 KB)
+   → Guide complet d'installation et d'utilisation
+
+✅ Exemple-Utilisation.vb (11 KB)
+   → 9 exemples de code prêts à l'emploi
+
+
+🎨 FONCTIONNALITÉS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📧 7 Types d'Emails avec Templates HTML :
+   1. Info          - Bleu #2196F3      (ℹ️)
+   2. Erreur        - Rouge #f44336     (❌)
+   3. Urgence       - Orange #ff9800    (⚡)
+   4. Succès        - Vert #4caf50      (✅)
+   5. Alerte        - Rouge foncé #b71c1c (🚨)
+   6. Avertissement - Jaune #f57f17     (⚠️)
+   7. Notification  - Violet #7b1fa2    (🔔)
+
+✨ Fonctionnalités Avancées :
+   ✓ Support CC (copie carbone)
+   ✓ Support BCC (copie carbone invisible)
+   ✓ Signatures personnalisables
+   ✓ Pièces jointes réelles (Base64)
+   ✓ Templates HTML responsive
+   ✓ API asynchrone (async/await)
+
+
+⚙️ PRÉREQUIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• .NET Framework 4.8 ou supérieur
+• Compte SendGrid (gratuit : 100 emails/jour)
+• Clé API SendGrid valide
+• Email expéditeur vérifié dans SendGrid
+
+
+🚀 DÉMARRAGE RAPIDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Copier les DLL dans votre projet :
+   - EmailSenderDLL.dll
+   - Newtonsoft.Json.dll
+
+2. Ajouter les références dans Visual Studio
+
+3. Code minimal (VB.NET) :
+
+   Imports EmailSenderDLL
+
+   Dim sender As New EmailSender(
+       "VOTRE_CLE_API",
+       "votre@email.com", 
+       "Votre Nom"
+   )
+
+   Await sender.EnvoyerEmailAsync(
+       "destinataire@example.com",
+       "Sujet",
+       "Message",
+       TypeEmail.Info
+   )
+
+
+📚 DOCUMENTATION COMPLÈTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Consultez README.md pour la documentation complète
+• Consultez Exemple-Utilisation.vb pour 9 exemples de code
+• IntelliSense disponible dans Visual Studio avec EmailSenderDLL.xml
+
+
+📊 INFORMATIONS TECHNIQUES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Version                : 1.2.0
+Date de compilation    : 6 novembre 2025
+Framework cible        : .NET Framework 4.8
+Taille DLL principale  : 83 KB
+Taille package ZIP     : 293 KB
+Dépendances            : Newtonsoft.Json 13.0.3
+API utilisée           : SendGrid REST API v3
+
+
+📝 CHANGELOG
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[v1.2.0] - 6 novembre 2025
+• ✨ Ajout de 3 nouveaux types : Alerte, Avertissement, Notification
+• 🎨 Total : 7 types d'emails disponibles
+• 📦 DLL : 83 KB
+
+[v1.1.0] - 6 novembre 2025
+• ✨ Ajout du type Succès (Vert)
+• 📎 Support des pièces jointes réelles (Base64)
+• 📦 DLL : 62 KB
+
+[v1.0.0] - 6 novembre 2025
+• 🎉 Version initiale
+• 🎨 3 types : Info, Erreur, Urgence
+• 📧 Support CC/BCC
+• ✍️ Signatures personnalisables
+• 📦 DLL : 27 KB
+
+
+📞 SUPPORT & CONTACT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Développé par : Tech Dev DAAM
+Email         : ***REMOVED***
+Date          : 6 novembre 2025
+
+
+═══════════════════════════════════════════════════════════════════
+
+Pour commencer, lisez README.md et testez Exemple-Utilisation.vb
+
+Bonne utilisation ! 🚀
+
+═══════════════════════════════════════════════════════════════════
