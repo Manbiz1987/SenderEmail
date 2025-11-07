@@ -6,6 +6,7 @@
     <AssemblyName>EmailSenderDLL</AssemblyName>
     <OutputType>Library</OutputType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>Off</OptionStrict>
@@ -13,8 +14,8 @@
     <Authors>Tech Dev DAAM</Authors>
     <Company>DAAM</Company>
     <Product>EmailSenderDLL</Product>
-    <Description>DLL pour envoi d'emails via SendGrid avec 3 types de templates (Info, Erreur, Urgence), support CC/BCC et signatures personnalisables</Description>
-    <Version>1.0.0</Version>
+    <Description>DLL pour envoi d'emails via SendGrid avec 4 types de templates (Info, Erreur, Urgence, Succes), support CC/BCC, signatures personnalisables et pièces jointes</Description>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

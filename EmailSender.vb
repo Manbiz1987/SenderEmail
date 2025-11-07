@@ -1,5 +1,6 @@
 Imports System
 Imports System.Collections.Generic
+Imports System.IO
 Imports System.Net.Http
 Imports System.Text
 Imports System.Threading.Tasks
@@ -15,6 +16,8 @@ Public Enum TypeEmail
     Erreur = 1
     ''' <summary>Email urgent (Orange)</summary>
     Urgence = 2
+    ''' <summary>Email de succès (Vert)</summary>
+    Succes = 3
 End Enum
 
 ''' <summary>
@@ -48,9 +51,10 @@ Public Class EmailSender
     ''' <param name="destinataire">Adresse email du destinataire principal</param>
     ''' <param name="sujet">Sujet de l'email</param>
     ''' <param name="message">Contenu du message (HTML autorisé)</param>
-    ''' <param name="typeEmail">Type d'email (Info, Erreur, Urgence)</param>
+    ''' <param name="typeEmail">Type d'email (Info, Erreur, Urgence, Succes)</param>
     ''' <param name="signature">Signature personnalisée (optionnel)</param>
     ''' <param name="pieceJointes">Liste des noms de pièces jointes à afficher (optionnel)</param>
+    ''' <param name="fichiersAttaches">Liste des chemins complets des fichiers à attacher (optionnel)</param>
     ''' <param name="cc">Liste des destinataires en copie (optionnel)</param>
     ''' <param name="cci">Liste des destinataires en copie cachée (optionnel)</param>
     ''' <returns>True si l'email est envoyé avec succès, False sinon</returns>
@@ -61,6 +65,7 @@ Public Class EmailSender
         Optional typeEmail As TypeEmail = TypeEmail.Info,
         Optional signature As String = Nothing,
         Optional pieceJointes As List(Of String) = Nothing,
+        Optional fichiersAttaches As List(Of String) = Nothing,
         Optional cc As List(Of String) = Nothing,
         Optional cci As List(Of String) = Nothing
     ) As Task(Of Boolean)
@@ -86,6 +91,8 @@ Public Class EmailSender
                     htmlContent = GenererHtmlErreur(sujet, message, signature, pieceJointes)
                 Case TypeEmail.Urgence
                     htmlContent = GenererHtmlUrgence(sujet, message, signature, pieceJointes)
+                Case TypeEmail.Succes
+                    htmlContent = GenererHtmlSucces(sujet, message, signature, pieceJointes)
             End Select
 
             ' Construction de la liste des destinataires
@@ -138,21 +145,64 @@ Public Class EmailSender
 
             personalizations.Add(personalization)
 
+            ' Gestion des pièces jointes (fichiers réels)
+            Dim attachments As List(Of Object) = Nothing
+            If fichiersAttaches IsNot Nothing AndAlso fichiersAttaches.Count > 0 Then
+                attachments = New List(Of Object)()
+                For Each fichier In fichiersAttaches
+                    Try
+                        If IO.File.Exists(fichier) Then
+                            Dim fileBytes = IO.File.ReadAllBytes(fichier)
+                            Dim base64Content = Convert.ToBase64String(fileBytes)
+                            Dim fileName = IO.Path.GetFileName(fichier)
+                            
+                            attachments.Add(New With {
+                                .content = base64Content,
+                                .filename = fileName,
+                                .type = "application/octet-stream",
+                                .disposition = "attachment"
+                            })
+                        End If
+                    Catch ex As Exception
+                        Console.WriteLine($"Erreur lecture fichier {fichier}: {ex.Message}")
+                    End Try
+                Next
+            End If
+
             ' Construction du payload JSON pour SendGrid
-            Dim payload = New With {
-                .personalizations = personalizations,
-                .from = New With {
-                    .email = _fromEmail,
-                    .name = _fromName
-                },
-                .subject = sujet,
-                .content = New Object() {
-                    New With {
-                        .type = "text/html",
-                        .value = htmlContent
+            Dim payload As Object
+            If attachments IsNot Nothing AndAlso attachments.Count > 0 Then
+                payload = New With {
+                    .personalizations = personalizations,
+                    .from = New With {
+                        .email = _fromEmail,
+                        .name = _fromName
+                    },
+                    .subject = sujet,
+                    .content = New Object() {
+                        New With {
+                            .type = "text/html",
+                            .value = htmlContent
+                        }
+                    },
+                    .attachments = attachments
+                }
+            Else
+                payload = New With {
+                    .personalizations = personalizations,
+                    .from = New With {
+                        .email = _fromEmail,
+                        .name = _fromName
+                    },
+                    .subject = sujet,
+                    .content = New Object() {
+                        New With {
+                            .type = "text/html",
+                            .value = htmlContent
+                        }
                     }
                 }
-            }
+            End If
 
             Dim jsonPayload As String = JsonConvert.SerializeObject(payload)
 
@@ -333,6 +383,60 @@ Public Class EmailSender
         <div style='background-color: #f5f5f5; padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;'>
             <p style='margin: 0; color: #9e9e9e; font-size: 12px;'>
                 Cet email a été envoyé par <strong style='color: #ff9800;'>Tech Dev DAAM</strong>
+            </p>
+        </div>
+    </div>
+</body>
+</html>"
+    End Function
+
+    ''' <summary>
+    ''' Génère le template HTML pour un email de type Succès (Vert)
+    ''' </summary>
+    Private Function GenererHtmlSucces(sujet As String, message As String, signature As String, pieceJointes As List(Of String)) As String
+        Dim piecesJointesHtml As String = ""
+        If pieceJointes IsNot Nothing AndAlso pieceJointes.Count > 0 Then
+            piecesJointesHtml = "<div style='margin-top: 20px; padding: 15px; background-color: #e8f5e9; border-left: 4px solid #4caf50; border-radius: 4px;'>"
+            piecesJointesHtml &= "<p style='margin: 0 0 10px 0; font-weight: bold; color: #2e7d32;'>📎 Pièces jointes:</p>"
+            piecesJointesHtml &= "<ul style='margin: 0; padding-left: 20px;'>"
+            For Each piece In pieceJointes
+                piecesJointesHtml &= $"<li style='color: #424242; margin: 5px 0;'>{piece}</li>"
+            Next
+            piecesJointesHtml &= "</ul></div>"
+        End If
+
+        Dim signatureHtml As String = ""
+        If Not String.IsNullOrWhiteSpace(signature) Then
+            signatureHtml = $"<div style='margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; color: #757575; font-size: 14px;'>{signature.Replace(vbCrLf, "<br>").Replace(vbLf, "<br>")}</div>"
+        End If
+
+        Return $"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+</head>
+<body style='margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;'>
+    <div style='max-width: 600px; margin: 20px auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>
+        <!-- Header Vert -->
+        <div style='background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%); padding: 30px; text-align: center;'>
+            <h1 style='color: white; margin: 0; font-size: 24px; font-weight: 600;'>✅ Succès</h1>
+        </div>
+        
+        <!-- Contenu -->
+        <div style='padding: 30px;'>
+            <div style='color: #212121; font-size: 16px; line-height: 1.6;'>
+                {message}
+            </div>
+            
+            {piecesJointesHtml}
+            {signatureHtml}
+        </div>
+        
+        <!-- Footer -->
+        <div style='background-color: #f5f5f5; padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;'>
+            <p style='margin: 0; color: #9e9e9e; font-size: 12px;'>
+                Cet email a été envoyé par <strong style='color: #4caf50;'>Tech Dev DAAM</strong>
             </p>
         </div>
     </div>
