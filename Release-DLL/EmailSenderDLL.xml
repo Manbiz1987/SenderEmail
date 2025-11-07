@@ -1,0 +1,171 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+EmailSenderDLL
+</name>
+</assembly>
+<members>
+<member name="T:EmailSenderDLL.TypeEmail">
+ <summary>
+ Types d'emails disponibles avec templates HTML distincts
+ </summary>
+</member>
+<member name="F:EmailSenderDLL.TypeEmail.Info">
+ <summary>Email informatif (Bleu)</summary>
+</member>
+<member name="F:EmailSenderDLL.TypeEmail.Erreur">
+ <summary>Email d'erreur (Rouge)</summary>
+</member>
+<member name="F:EmailSenderDLL.TypeEmail.Urgence">
+ <summary>Email urgent (Orange)</summary>
+</member>
+<member name="F:EmailSenderDLL.TypeEmail.Succes">
+ <summary>Email de succès (Vert)</summary>
+</member>
+<member name="F:EmailSenderDLL.TypeEmail.Alerte">
+ <summary>Email d'alerte (Rouge foncé)</summary>
+</member>
+<member name="F:EmailSenderDLL.TypeEmail.Avertissement">
+ <summary>Email d'avertissement (Jaune)</summary>
+</member>
+<member name="F:EmailSenderDLL.TypeEmail.Notification">
+ <summary>Email de notification (Violet)</summary>
+</member>
+<member name="T:EmailSenderDLL.EmailSender">
+ <summary>
+ Classe pour envoyer des emails via SendGrid API
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSender.#ctor(System.String,System.String,System.String)">
+ <summary>
+ Initialise une nouvelle instance de EmailSender
+ </summary>
+ <param name="apiKey">Clé API SendGrid</param>
+ <param name="fromEmail">Adresse email de l'expéditeur</param>
+ <param name="fromName">Nom affiché de l'expéditeur</param>
+</member>
+<member name="M:EmailSenderDLL.EmailSender.EnvoyerEmailAsync(System.String,System.String,System.String,EmailSenderDLL.TypeEmail,System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String})">
+ <summary>
+ Envoie un email avec template personnalisé
+ </summary>
+ <param name="destinataire">Adresse email du destinataire principal</param>
+ <param name="sujet">Sujet de l'email</param>
+ <param name="message">Contenu du message (HTML autorisé)</param>
+ <param name="typeEmail">Type d'email (Info, Erreur, Urgence, Succes)</param>
+ <param name="signature">Signature personnalisée (optionnel)</param>
+ <param name="pieceJointes">Liste des noms de pièces jointes à afficher (optionnel)</param>
+ <param name="fichiersAttaches">Liste des chemins complets des fichiers à attacher (optionnel)</param>
+ <param name="cc">Liste des destinataires en copie (optionnel)</param>
+ <param name="cci">Liste des destinataires en copie cachée (optionnel)</param>
+ <returns>True si l'email est envoyé avec succès, False sinon</returns>
+</member>
+<member name="M:EmailSenderDLL.EmailSender.GenererHtmlInfo(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le template HTML pour un email de type Info (Bleu)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSender.GenererHtmlErreur(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le template HTML pour un email de type Erreur (Rouge)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSender.GenererHtmlUrgence(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le template HTML pour un email de type Urgence (Orange)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSender.GenererHtmlSucces(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le template HTML pour un email de type Succès (Vert)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSender.GenererHtmlAlerte(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le HTML pour un email de type Alerte (Rouge foncé)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSender.GenererHtmlAvertissement(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le HTML pour un email de type Avertissement (Jaune)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSender.GenererHtmlNotification(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le HTML pour un email de type Notification (Violet)
+ </summary>
+</member>
+<member name="T:EmailSenderDLL.ExempleUtilisation">
+ <summary>
+ Exemple complet d'utilisation de EmailSenderDLL v1.2.0
+ Ce fichier démontre toutes les fonctionnalités disponibles
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple1_EmailSimple(EmailSenderDLL.EmailSender)">
+ <summary>
+ Exemple 1 : Email simple de type Info (Bleu)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple2_EmailAvecSignature(EmailSenderDLL.EmailSender)">
+ <summary>
+ Exemple 2 : Email avec signature personnalisée
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple3_EmailAvecPieceJointe(EmailSenderDLL.EmailSender)">
+ <summary>
+ Exemple 3 : Email avec pièce jointe réelle
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple4_EmailAvecCCetBCC(EmailSenderDLL.EmailSender)">
+ <summary>
+ Exemple 4 : Email avec CC et BCC
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple5_EmailSucces(EmailSenderDLL.EmailSender)">
+ <summary>
+ Exemple 5 : Email de type Succès (Vert)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple6_EmailAlerte(EmailSenderDLL.EmailSender)">
+ <summary>
+ Exemple 6 : Email de type Alerte (Rouge foncé)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple7_EmailAvertissement(EmailSenderDLL.EmailSender)">
+ <summary>
+ Exemple 7 : Email de type Avertissement (Jaune)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple8_EmailNotification(EmailSenderDLL.EmailSender)">
+ <summary>
+ Exemple 8 : Email de type Notification (Violet)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple9_EmailComplet(EmailSenderDLL.EmailSender)">
+ <summary>
+ Exemple 9 : Email complet avec toutes les options
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.TestNouvellesFonctionnalites.TestEmailSucces(EmailSenderDLL.EmailSender)">
+ <summary>
+ Test du nouveau type d'email : Succes (Vert)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.TestNouvellesFonctionnalites.TestEmailAvecPieceJointe(EmailSenderDLL.EmailSender)">
+ <summary>
+ Test de l'envoi d'un email avec une pièce jointe réelle
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.TestNouvellesFonctionnalites.TestEmailSuccesAvecPieceJointe(EmailSenderDLL.EmailSender)">
+ <summary>
+ Test combiné : Email Succes avec pièce jointe
+ </summary>
+</member>
+<member name="T:EmailSenderDLL.TestsComplets">
+ <summary>
+ Classe de tests complète pour EmailSenderDLL v1.2.0
+ Teste tous les 7 types d'emails + fonctionnalités avancées
+ </summary>
+</member>
+</members>
+</doc>
