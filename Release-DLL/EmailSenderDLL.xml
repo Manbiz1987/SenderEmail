@@ -95,57 +95,6 @@ EmailSenderDLL
  Génère le HTML pour un email de type Notification (Violet)
  </summary>
 </member>
-<member name="T:EmailSenderDLL.ExempleUtilisation">
- <summary>
- Exemple complet d'utilisation de EmailSenderDLL v1.2.0
- Ce fichier démontre toutes les fonctionnalités disponibles
- </summary>
-</member>
-<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple1_EmailSimple(EmailSenderDLL.EmailSender)">
- <summary>
- Exemple 1 : Email simple de type Info (Bleu)
- </summary>
-</member>
-<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple2_EmailAvecSignature(EmailSenderDLL.EmailSender)">
- <summary>
- Exemple 2 : Email avec signature personnalisée
- </summary>
-</member>
-<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple3_EmailAvecPieceJointe(EmailSenderDLL.EmailSender)">
- <summary>
- Exemple 3 : Email avec pièce jointe réelle
- </summary>
-</member>
-<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple4_EmailAvecCCetBCC(EmailSenderDLL.EmailSender)">
- <summary>
- Exemple 4 : Email avec CC et BCC
- </summary>
-</member>
-<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple5_EmailSucces(EmailSenderDLL.EmailSender)">
- <summary>
- Exemple 5 : Email de type Succès (Vert)
- </summary>
-</member>
-<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple6_EmailAlerte(EmailSenderDLL.EmailSender)">
- <summary>
- Exemple 6 : Email de type Alerte (Rouge foncé)
- </summary>
-</member>
-<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple7_EmailAvertissement(EmailSenderDLL.EmailSender)">
- <summary>
- Exemple 7 : Email de type Avertissement (Jaune)
- </summary>
-</member>
-<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple8_EmailNotification(EmailSenderDLL.EmailSender)">
- <summary>
- Exemple 8 : Email de type Notification (Violet)
- </summary>
-</member>
-<member name="M:EmailSenderDLL.ExempleUtilisation.Exemple9_EmailComplet(EmailSenderDLL.EmailSender)">
- <summary>
- Exemple 9 : Email complet avec toutes les options
- </summary>
-</member>
 <member name="M:EmailSenderDLL.TestNouvellesFonctionnalites.TestEmailSucces(EmailSenderDLL.EmailSender)">
  <summary>
  Test du nouveau type d'email : Succes (Vert)
