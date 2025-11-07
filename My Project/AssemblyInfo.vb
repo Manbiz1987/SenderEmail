@@ -9,10 +9,10 @@ Imports System.Runtime.InteropServices
 ' Passez en revue les valeurs des attributs de l'assembly
 
 <Assembly: AssemblyTitle("EmailSenderDLL")>
-<Assembly: AssemblyDescription("DLL pour envoi d'emails via SendGrid avec 4 types de templates (Info, Erreur, Urgence, Succes), support CC/BCC, signatures personnalisables et pièces jointes")>
+<Assembly: AssemblyDescription("DLL pour envoi d'emails via SendGrid avec 7 types de templates (Info, Erreur, Urgence, Succes, Alerte, Avertissement, Notification), support CC/BCC, signatures personnalisables et pièces jointes")>
 <Assembly: AssemblyCompany("DAAM")>
 <Assembly: AssemblyProduct("EmailSenderDLL")>
-<Assembly: AssemblyCopyright("Copyright © DAAM 2024")>
+<Assembly: AssemblyCopyright("Copyright © DAAM 2025")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' en utilisant '*', comme indiqué ci-dessous :
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.1.0.0")>
-<Assembly: AssemblyFileVersion("1.1.0.0")>
+<Assembly: AssemblyVersion("1.2.0.0")>
+<Assembly: AssemblyFileVersion("1.2.0.0")>

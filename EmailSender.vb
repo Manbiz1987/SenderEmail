@@ -18,6 +18,12 @@ Public Enum TypeEmail
     Urgence = 2
     ''' <summary>Email de succès (Vert)</summary>
     Succes = 3
+    ''' <summary>Email d'alerte (Rouge foncé)</summary>
+    Alerte = 4
+    ''' <summary>Email d'avertissement (Jaune)</summary>
+    Avertissement = 5
+    ''' <summary>Email de notification (Violet)</summary>
+    Notification = 6
 End Enum
 
 ''' <summary>
@@ -93,6 +99,12 @@ Public Class EmailSender
                     htmlContent = GenererHtmlUrgence(sujet, message, signature, pieceJointes)
                 Case TypeEmail.Succes
                     htmlContent = GenererHtmlSucces(sujet, message, signature, pieceJointes)
+                Case TypeEmail.Alerte
+                    htmlContent = GenererHtmlAlerte(sujet, message, signature, pieceJointes)
+                Case TypeEmail.Avertissement
+                    htmlContent = GenererHtmlAvertissement(sujet, message, signature, pieceJointes)
+                Case TypeEmail.Notification
+                    htmlContent = GenererHtmlNotification(sujet, message, signature, pieceJointes)
             End Select
 
             ' Construction de la liste des destinataires
@@ -437,6 +449,156 @@ Public Class EmailSender
         <div style='background-color: #f5f5f5; padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;'>
             <p style='margin: 0; color: #9e9e9e; font-size: 12px;'>
                 Cet email a été envoyé par <strong style='color: #4caf50;'>Tech Dev DAAM</strong>
+            </p>
+        </div>
+    </div>
+</body>
+</html>"
+    End Function
+
+    ''' <summary>
+    ''' Génère le HTML pour un email de type Alerte (Rouge foncé)
+    ''' </summary>
+    Private Function GenererHtmlAlerte(sujet As String, message As String, signature As String, pieceJointes As List(Of String)) As String
+        Dim piecesJointesHtml As String = ""
+        If pieceJointes IsNot Nothing AndAlso pieceJointes.Count > 0 Then
+            piecesJointesHtml = "<div style='margin-top: 20px; padding: 15px; background-color: #ffebee; border-left: 4px solid #b71c1c; border-radius: 4px;'>"
+            piecesJointesHtml &= "<p style='margin: 0 0 10px 0; font-weight: bold; color: #b71c1c;'>📎 Pièces jointes :</p>"
+            piecesJointesHtml &= "<ul style='margin: 0; padding-left: 20px;'>"
+            For Each piece In pieceJointes
+                piecesJointesHtml &= $"<li style='color: #666;'>{piece}</li>"
+            Next
+            piecesJointesHtml &= "</ul></div>"
+        End If
+
+        Dim signatureHtml As String = ""
+        If Not String.IsNullOrWhiteSpace(signature) Then
+            signatureHtml = $"<div style='margin-top: 30px; padding-top: 20px; border-top: 2px solid #ffebee;'>
+                <p style='margin: 0; color: #666; font-size: 14px; white-space: pre-line;'>{signature}</p>
+            </div>"
+        End If
+
+        Return $"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+</head>
+<body style='margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;'>
+    <div style='max-width: 600px; margin: 20px auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);'>
+        <div style='background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%); padding: 30px; text-align: center;'>
+            <h1 style='margin: 0; color: white; font-size: 24px;'>🚨 {sujet}</h1>
+        </div>
+        <div style='padding: 30px;'>
+            <div style='color: #333; font-size: 16px; line-height: 1.6; white-space: pre-line;'>
+                {message}
+            </div>
+            {piecesJointesHtml}
+            {signatureHtml}
+        </div>
+        <div style='background-color: #f5f5f5; padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;'>
+            <p style='margin: 0; color: #9e9e9e; font-size: 12px;'>
+                Cet email a été envoyé par <strong style='color: #b71c1c;'>Tech Dev DAAM</strong>
+            </p>
+        </div>
+    </div>
+</body>
+</html>"
+    End Function
+
+    ''' <summary>
+    ''' Génère le HTML pour un email de type Avertissement (Jaune)
+    ''' </summary>
+    Private Function GenererHtmlAvertissement(sujet As String, message As String, signature As String, pieceJointes As List(Of String)) As String
+        Dim piecesJointesHtml As String = ""
+        If pieceJointes IsNot Nothing AndAlso pieceJointes.Count > 0 Then
+            piecesJointesHtml = "<div style='margin-top: 20px; padding: 15px; background-color: #fffde7; border-left: 4px solid #f57f17; border-radius: 4px;'>"
+            piecesJointesHtml &= "<p style='margin: 0 0 10px 0; font-weight: bold; color: #f57f17;'>📎 Pièces jointes :</p>"
+            piecesJointesHtml &= "<ul style='margin: 0; padding-left: 20px;'>"
+            For Each piece In pieceJointes
+                piecesJointesHtml &= $"<li style='color: #666;'>{piece}</li>"
+            Next
+            piecesJointesHtml &= "</ul></div>"
+        End If
+
+        Dim signatureHtml As String = ""
+        If Not String.IsNullOrWhiteSpace(signature) Then
+            signatureHtml = $"<div style='margin-top: 30px; padding-top: 20px; border-top: 2px solid #fffde7;'>
+                <p style='margin: 0; color: #666; font-size: 14px; white-space: pre-line;'>{signature}</p>
+            </div>"
+        End If
+
+        Return $"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+</head>
+<body style='margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;'>
+    <div style='max-width: 600px; margin: 20px auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);'>
+        <div style='background: linear-gradient(135deg, #f57f17 0%, #fbc02d 100%); padding: 30px; text-align: center;'>
+            <h1 style='margin: 0; color: white; font-size: 24px;'>⚠️ {sujet}</h1>
+        </div>
+        <div style='padding: 30px;'>
+            <div style='color: #333; font-size: 16px; line-height: 1.6; white-space: pre-line;'>
+                {message}
+            </div>
+            {piecesJointesHtml}
+            {signatureHtml}
+        </div>
+        <div style='background-color: #f5f5f5; padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;'>
+            <p style='margin: 0; color: #9e9e9e; font-size: 12px;'>
+                Cet email a été envoyé par <strong style='color: #f57f17;'>Tech Dev DAAM</strong>
+            </p>
+        </div>
+    </div>
+</body>
+</html>"
+    End Function
+
+    ''' <summary>
+    ''' Génère le HTML pour un email de type Notification (Violet)
+    ''' </summary>
+    Private Function GenererHtmlNotification(sujet As String, message As String, signature As String, pieceJointes As List(Of String)) As String
+        Dim piecesJointesHtml As String = ""
+        If pieceJointes IsNot Nothing AndAlso pieceJointes.Count > 0 Then
+            piecesJointesHtml = "<div style='margin-top: 20px; padding: 15px; background-color: #f3e5f5; border-left: 4px solid #7b1fa2; border-radius: 4px;'>"
+            piecesJointesHtml &= "<p style='margin: 0 0 10px 0; font-weight: bold; color: #7b1fa2;'>📎 Pièces jointes :</p>"
+            piecesJointesHtml &= "<ul style='margin: 0; padding-left: 20px;'>"
+            For Each piece In pieceJointes
+                piecesJointesHtml &= $"<li style='color: #666;'>{piece}</li>"
+            Next
+            piecesJointesHtml &= "</ul></div>"
+        End If
+
+        Dim signatureHtml As String = ""
+        If Not String.IsNullOrWhiteSpace(signature) Then
+            signatureHtml = $"<div style='margin-top: 30px; padding-top: 20px; border-top: 2px solid #f3e5f5;'>
+                <p style='margin: 0; color: #666; font-size: 14px; white-space: pre-line;'>{signature}</p>
+            </div>"
+        End If
+
+        Return $"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+</head>
+<body style='margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;'>
+    <div style='max-width: 600px; margin: 20px auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);'>
+        <div style='background: linear-gradient(135deg, #7b1fa2 0%, #9c27b0 100%); padding: 30px; text-align: center;'>
+            <h1 style='margin: 0; color: white; font-size: 24px;'>🔔 {sujet}</h1>
+        </div>
+        <div style='padding: 30px;'>
+            <div style='color: #333; font-size: 16px; line-height: 1.6; white-space: pre-line;'>
+                {message}
+            </div>
+            {piecesJointesHtml}
+            {signatureHtml}
+        </div>
+        <div style='background-color: #f5f5f5; padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;'>
+            <p style='margin: 0; color: #9e9e9e; font-size: 12px;'>
+                Cet email a été envoyé par <strong style='color: #7b1fa2;'>Tech Dev DAAM</strong>
             </p>
         </div>
     </div>
