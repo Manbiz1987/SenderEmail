@@ -1,10 +1,24 @@
 # 📧 EmailSenderDLL - Envoi d'Emails via SendGrid
 
-**DLL VB.NET pour envoyer des emails professionnels avec 3 types de templates HTML**
+**DLL VB.NET pour envoyer des emails professionnels avec templates HTML sécurisés**
 
 [![.NET Framework](https://img.shields.io/badge/.NET%20Framework-4.8-blue)](https://dotnet.microsoft.com/)
 [![Visual Basic](https://img.shields.io/badge/Visual%20Basic-.NET-blueviolet)](https://docs.microsoft.com/en-us/dotnet/visual-basic/)
 [![SendGrid](https://img.shields.io/badge/SendGrid-API-green)](https://sendgrid.com/)
+[![Security](https://img.shields.io/badge/Security-Env%20Variables-red)](./Documentation/SECURITE_CONFIGURATION.md)
+
+---
+
+## ⚠️ IMPORTANT - Configuration Sécurisée
+
+**Ce projet utilise maintenant des variables d'environnement pour les credentials.**
+
+📖 **[Guide complet de sécurité](./Documentation/SECURITE_CONFIGURATION.md)**
+
+Avant d'utiliser cette DLL :
+1. Copiez `.env.example` vers `.env`
+2. Configurez vos vraies credentials SendGrid dans `.env`
+3. **Ne committez JAMAIS le fichier `.env`** dans Git
 
 ---
 
@@ -17,24 +31,23 @@
 5. [Exemples Avancés](#-exemples-avancés)
 6. [API Reference](#-api-reference)
 7. [Gestion des Erreurs](#-gestion-des-erreurs)
-8. [FAQ](#-faq)
-9. [Support](#-support)
+8. [Sécurité](#-sécurité)
+9. [FAQ](#-faq)
+10. [Support](#-support)
 
 ---
 
 ## ✨ Fonctionnalités
 
-✅ **3 types d'emails** avec templates HTML distincts :
-- 🔵 **Info** (Bleu #2196F3) - Pour les notifications informatives
-- 🔴 **Erreur** (Rouge #f44336) - Pour les alertes d'erreurs
-- 🟠 **Urgence** (Orange #ff9800) - Pour les messages urgents
-
+✅ **7 types d'emails** avec templates HTML distincts optimisés Outlook
+✅ **Configuration sécurisée** via variables d'environnement  
 ✅ **Support complet CC et BCC** (copie carbone et copie cachée)  
 ✅ **Signatures personnalisables** pour chaque email  
 ✅ **Affichage de pièces jointes** (liste informative)  
-✅ **Templates HTML responsive** adaptés aux mobiles  
-✅ **API simple et intuitive** - seulement 3 lignes de code !  
-✅ **Asynchrone** pour des performances optimales
+✅ **Templates HTML responsive** adaptés aux mobiles et Outlook  
+✅ **API simple et intuitive** - Configuration en 5 lignes !  
+✅ **Asynchrone** pour des performances optimales  
+✅ **Conforme aux bonnes pratiques de sécurité**
 
 ---
 
@@ -65,26 +78,77 @@ Les DLL compilées seront dans `bin/Release/net48/`
 
 ---
 
+## 🔐 Configuration SendGrid (Sécurisée)
+
+### 1. Créer votre fichier .env
+
+```bash
+# Depuis la racine du projet
+cp .env.example .env
+```
+
+### 2. Configurer vos credentials
+
+Éditez `.env` avec vos vraies valeurs SendGrid :
+
+```ini
+SENDGRID_API_KEY=SG.votre_cle_api_ici
+SENDGRID_FROM_EMAIL=votre-email@domaine.com
+SENDGRID_FROM_NAME=Votre Nom ou Entreprise
+TEST_TO_EMAIL=destinataire-test@domaine.com
+```
+
+### 3. Obtenir votre clé API SendGrid
+
+1. Créez un compte gratuit sur [SendGrid](https://signup.sendgrid.com/)
+2. Allez dans **Settings** → **API Keys**
+3. Créez une nouvelle clé avec les permissions **Mail Send** (Full Access)
+4. Copiez la clé (vous ne la reverrez plus !)
+5. Collez-la dans votre fichier `.env`
+
+⚠️ **Important** : Ne partagez JAMAIS votre clé API. Le fichier `.env` ne doit JAMAIS être committé dans Git.
+
+---
+
 ## 📖 Utilisation Simple
 
-### Exemple minimal (3 lignes)
+### Configuration initiale
 
 ```vb
 Imports EmailSenderDLL
 
-' 1. Initialiser le sender
-Dim sender As New EmailSender(
-    "VOTRE_CLE_API_SENDGRID",
-    "votre.email@example.com",
-    "Votre Nom"
-)
-
-' 2. Envoyer un email
-Dim success = Await sender.EnvoyerEmailAsync(
-    destinataire:="destinataire@example.com",
-    sujet:="Test Email",
-    message:="<p>Bonjour, ceci est un test !</p>"
-)
+Module MonProgramme
+    Private ReadOnly API_KEY As String
+    Private ReadOnly FROM_EMAIL As String
+    Private ReadOnly FROM_NAME As String
+    
+    ' Charger la configuration au démarrage
+    Sub New()
+        EnvConfig.LoadEnvFile()
+        API_KEY = EnvConfig.GetRequired("SENDGRID_API_KEY")
+        FROM_EMAIL = EnvConfig.GetRequired("SENDGRID_FROM_EMAIL")
+        FROM_NAME = EnvConfig.GetRequired("SENDGRID_FROM_NAME")
+    End Sub
+    
+    Sub Main()
+        ' 1. Initialiser le sender
+        Dim sender As New EmailSender(API_KEY, FROM_EMAIL, FROM_NAME)
+        
+        ' 2. Envoyer un email
+        Dim success = Await sender.EnvoyerEmailAsync(
+            destinataire:="destinataire@example.com",
+            sujet:="Test Email",
+            message:="<p>Bonjour, ceci est un test !</p>",
+            typeEmail:=TypeEmail.Info
+        )
+        
+        If success Then
+            Console.WriteLine("✅ Email envoyé avec succès!")
+        Else
+            Console.WriteLine("❌ Échec de l'envoi")
+        End If
+    End Sub
+End Module
 
 ' 3. Vérifier le résultat
 If success Then
