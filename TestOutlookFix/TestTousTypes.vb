@@ -2,10 +2,24 @@ Imports System
 Imports EmailSenderDLL
 
 Module TestTousTypes
-    Private Const API_KEY As String = "***REMOVED***"
-    Private Const FROM_EMAIL As String = "***REMOVED***"
-    Private Const FROM_NAME As String = "Tech Dev DAAM"
-    Private Const TO_EMAIL As String = "***REMOVED***"
+    Private ReadOnly API_KEY As String
+    Private ReadOnly FROM_EMAIL As String
+    Private ReadOnly FROM_NAME As String
+    Private ReadOnly TO_EMAIL As String
+    
+    ' Constructeur statique
+    Sub New()
+        Try
+            EnvConfig.LoadEnvFile()
+            API_KEY = EnvConfig.GetRequired("RESEND_API_KEY")
+            FROM_EMAIL = EnvConfig.GetRequired("RESEND_FROM_EMAIL")
+            FROM_NAME = EnvConfig.GetRequired("RESEND_FROM_NAME")
+            TO_EMAIL = EnvConfig.GetOptional("TEST_TO_EMAIL", "test@example.com")
+        Catch ex As Exception
+            Console.WriteLine("❌ ERREUR: " & ex.Message)
+            Environment.Exit(1)
+        End Try
+    End Sub
 
     Sub Main()
         Console.OutputEncoding = System.Text.Encoding.UTF8

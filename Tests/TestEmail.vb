@@ -5,7 +5,7 @@
 ' Ce fichier permet de tester rapidement l'envoi d'emails avec la DLL EmailSenderDLL
 ' 
 ' INSTRUCTIONS :
-' 1. Remplacez les valeurs de configuration par vos vraies valeurs SendGrid
+' 1. Remplacez les valeurs de configuration par vos vraies valeurs Resend
 ' 2. Remplacez les adresses emails de test par vos vraies adresses
 ' 3. Décommentez le test que vous voulez exécuter
 ' 4. Compilez et exécutez
@@ -18,12 +18,27 @@ Imports System.Threading.Tasks
 Module TestEmail
 
     ' ============================================================================
-    ' CONFIGURATION
+    ' CONFIGURATION - Chargée depuis .env
     ' ============================================================================
-    Private Const API_KEY As String = "***REMOVED***"
-    Private Const FROM_EMAIL As String = "***REMOVED***"
-    Private Const FROM_NAME As String = "Tech Dev DAAM"
-    Private Const TO_EMAIL As String = "***REMOVED***"
+    Private ReadOnly API_KEY As String
+    Private ReadOnly FROM_EMAIL As String
+    Private ReadOnly FROM_NAME As String
+    Private ReadOnly TO_EMAIL As String
+    
+    ' Constructeur statique pour charger la configuration
+    Sub New()
+        Try
+            EnvConfig.LoadEnvFile()
+            API_KEY = EnvConfig.GetRequired("RESEND_API_KEY")
+            FROM_EMAIL = EnvConfig.GetRequired("RESEND_FROM_EMAIL")
+            FROM_NAME = EnvConfig.GetRequired("RESEND_FROM_NAME")
+            TO_EMAIL = EnvConfig.GetOptional("TEST_TO_EMAIL", "test@example.com")
+        Catch ex As Exception
+            Console.WriteLine("❌ ERREUR: " & ex.Message)
+            Console.WriteLine("Créez un fichier .env à partir de .env.example")
+            Environment.Exit(1)
+        End Try
+    End Sub
 
     ' ============================================================================
     ' FONCTION PRINCIPALE

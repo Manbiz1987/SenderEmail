@@ -36,7 +36,7 @@ Public Class EnvConfig
             If Not File.Exists(envFilePath) Then
                 Throw New FileNotFoundException(
                     $"Fichier .env introuvable. " &
-                    $"Créez un fichier .env à partir de .env.example avec vos credentials SendGrid.", 
+                    $"Créez un fichier .env à partir de .env.example avec vos credentials Resend.", 
                     ".env")
             End If
 

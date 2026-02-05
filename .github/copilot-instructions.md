@@ -7,7 +7,7 @@
 **Langage:** Visual Basic .NET
 
 ### Fonctionnalités principales
-- Envoi d'emails via SendGrid REST API
+- Envoi d'emails via Resend REST API
 - 3 types d'emails avec templates HTML distincts:
   - **Info** (Bleu #2196F3)
   - **Erreur** (Rouge #f44336)
@@ -20,11 +20,14 @@
 ### Dépendances
 - **Newtonsoft.Json** (pour sérialisation JSON)
 
-### Configuration SendGrid
-- API Key: `***REMOVED***`
-- Sender Email: `***REMOVED***`
-- Sender Name: `Tech Dev DAAM`
-- Endpoint: `https://api.sendgrid.com/v3/mail/send`
+### Configuration Resend
+- API Key: Chargée depuis variable d'environnement `RESEND_API_KEY` (voir `.env.example`)
+- Sender Email: Chargée depuis `RESEND_FROM_EMAIL`
+- Sender Name: Chargée depuis `RESEND_FROM_NAME`
+- Endpoint: `https://api.resend.com/emails`
+
+**SÉCURITÉ:** Toutes les credentials sont maintenant gérées via variables d'environnement.
+Copiez `.env.example` vers `.env` et configurez vos vraies valeurs.
 
 ## Structure du projet
 

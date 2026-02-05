@@ -1,10 +1,10 @@
-# 📧 EmailSenderDLL - Envoi d'Emails via SendGrid
+# 📧 EmailSenderDLL - Envoi d'Emails via Resend
 
 **DLL VB.NET pour envoyer des emails professionnels avec templates HTML sécurisés**
 
 [![.NET Framework](https://img.shields.io/badge/.NET%20Framework-4.8-blue)](https://dotnet.microsoft.com/)
 [![Visual Basic](https://img.shields.io/badge/Visual%20Basic-.NET-blueviolet)](https://docs.microsoft.com/en-us/dotnet/visual-basic/)
-[![SendGrid](https://img.shields.io/badge/SendGrid-API-green)](https://sendgrid.com/)
+[![Resend](https://img.shields.io/badge/Resend-API-green)](https://resend.com/)
 [![Security](https://img.shields.io/badge/Security-Env%20Variables-red)](./Documentation/SECURITE_CONFIGURATION.md)
 
 ---
@@ -17,7 +17,7 @@
 
 Avant d'utiliser cette DLL :
 1. Copiez `.env.example` vers `.env`
-2. Configurez vos vraies credentials SendGrid dans `.env`
+2. Configurez vos vraies credentials Resend dans `.env`
 3. **Ne committez JAMAIS le fichier `.env`** dans Git
 
 ---
@@ -26,7 +26,7 @@ Avant d'utiliser cette DLL :
 
 1. [Fonctionnalités](#-fonctionnalités)
 2. [Installation](#-installation-rapide)
-3. [Configuration SendGrid](#-configuration-sendgrid)
+3. [Configuration Resend](#-configuration-resend-sécurisée)
 4. [Utilisation](#-utilisation-simple)
 5. [Exemples Avancés](#-exemples-avancés)
 6. [API Reference](#-api-reference)
@@ -78,7 +78,7 @@ Les DLL compilées seront dans `bin/Release/net48/`
 
 ---
 
-## 🔐 Configuration SendGrid (Sécurisée)
+## 🔐 Configuration Resend (Sécurisée)
 
 ### 1. Créer votre fichier .env
 
@@ -89,20 +89,20 @@ cp .env.example .env
 
 ### 2. Configurer vos credentials
 
-Éditez `.env` avec vos vraies valeurs SendGrid :
+Éditez `.env` avec vos vraies valeurs Resend :
 
 ```ini
-SENDGRID_API_KEY=SG.votre_cle_api_ici
-SENDGRID_FROM_EMAIL=votre-email@domaine.com
-SENDGRID_FROM_NAME=Votre Nom ou Entreprise
+RESEND_API_KEY=re_votre_cle_api_ici
+RESEND_FROM_EMAIL=votre-email@domaine.com
+RESEND_FROM_NAME=Votre Nom ou Entreprise
 TEST_TO_EMAIL=destinataire-test@domaine.com
 ```
 
-### 3. Obtenir votre clé API SendGrid
+### 3. Obtenir votre clé API Resend
 
-1. Créez un compte gratuit sur [SendGrid](https://signup.sendgrid.com/)
-2. Allez dans **Settings** → **API Keys**
-3. Créez une nouvelle clé avec les permissions **Mail Send** (Full Access)
+1. Créez un compte gratuit sur [Resend](https://resend.com/signup)
+2. Allez dans **API Keys**
+3. Créez une nouvelle clé (commence par `re_`)
 4. Copiez la clé (vous ne la reverrez plus !)
 5. Collez-la dans votre fichier `.env`
 
@@ -125,9 +125,9 @@ Module MonProgramme
     ' Charger la configuration au démarrage
     Sub New()
         EnvConfig.LoadEnvFile()
-        API_KEY = EnvConfig.GetRequired("SENDGRID_API_KEY")
-        FROM_EMAIL = EnvConfig.GetRequired("SENDGRID_FROM_EMAIL")
-        FROM_NAME = EnvConfig.GetRequired("SENDGRID_FROM_NAME")
+        API_KEY = EnvConfig.GetRequired("RESEND_API_KEY")
+        FROM_EMAIL = EnvConfig.GetRequired("RESEND_FROM_EMAIL")
+        FROM_NAME = EnvConfig.GetRequired("RESEND_FROM_NAME")
     End Sub
     
     Sub Main()
@@ -158,7 +158,7 @@ Else
 End If
 ```
 
-### Exemple avec toutes les options
+### Exemple avec pièces jointes et CC/BCC
 
 ```vb
 ' Créer des listes pour CC et BCC
@@ -319,17 +319,17 @@ Next
 
 #### Erreur 403 : Forbidden
 **Cause :** Adresse expéditeur non validée  
-**Solution :** Validez votre email dans SendGrid → Settings → Sender Authentication
+**Solution :** Validez votre email dans Resend → Settings → Domains
 
 #### Erreur 429 : Too Many Requests
 **Cause :** Limite de quota dépassée  
 **Solution :** Ajoutez des pauses entre les envois (`Await Task.Delay(100)`)
 
 #### Email dans le Spam
-**Cause :** Nouveau compte SendGrid  
+**Cause :** Nouveau compte Resend  
 **Solutions :**
 - Demandez aux destinataires de marquer comme "Non spam"
-- Validez votre domaine dans SendGrid (recommandé)
+- Validez votre domaine dans Resend (recommandé)
 - Configurez SPF/DKIM/DMARC
 
 ### Exemple de Gestion d'Erreurs
@@ -364,18 +364,18 @@ End Try
 4. Copiez la clé générée (format: `SG.xxxxx...`)
 
 ### Q : Puis-je utiliser n'importe quelle adresse email ?
-**R :** Non, vous devez valider l'adresse dans SendGrid (Settings → Sender Authentication).
+**R :** Non, vous devez valider le domaine dans Resend (Settings → Domains).
 
 ### Q : Combien d'emails puis-je envoyer gratuitement ?
-**R :** SendGrid offre 100 emails/jour gratuitement, pour toujours.
+**R :** Resend offre 3000 emails/mois gratuitement (100/jour).
 
 ### Q : Puis-je envoyer de vraies pièces jointes ?
 **R :** Cette version affiche uniquement les noms de fichiers. Pour envoyer de vraies pièces jointes, vous pouvez étendre la DLL.
 
 ### Q : Mes emails vont dans le spam, pourquoi ?
-**R :** C'est normal pour les nouveaux comptes SendGrid. Solutions :
+**R :** C'est normal pour les nouveaux comptes Resend. Solutions :
 - Demandez aux destinataires de marquer comme "Non spam"
-- Validez votre domaine dans SendGrid
+- Validez votre domaine dans Resend
 - Envoyez régulièrement pour construire votre réputation
 
 ### Q : Puis-je personnaliser les couleurs ?
@@ -429,8 +429,8 @@ Public Sub New(apiKey As String, fromEmail As String, fromName As String)
 ```
 
 **Paramètres :**
-- `apiKey` : Clé API SendGrid (format: `SG.xxxxx...`)
-- `fromEmail` : Adresse email de l'expéditeur (doit être validée dans SendGrid)
+- `apiKey` : Clé API Resend (format: `re_xxxxx...`)
+- `fromEmail` : Adresse email de l'expéditeur (doit être validée dans Resend)
 - `fromName` : Nom affiché de l'expéditeur
 
 **Exemple :**
@@ -483,22 +483,22 @@ End Enum
 
 ---
 
-## 🔑 Configuration SendGrid
+## 🔑 Configuration Resend
 
-### Obtenir votre clé API SendGrid
+### Obtenir votre clé API Resend
 
-1. Créez un compte gratuit sur [SendGrid](https://sendgrid.com/) (100 emails/jour gratuits)
-2. Allez dans **Settings → API Keys**
+1. Créez un compte gratuit sur [Resend](https://resend.com/signup)
+2. Allez dans **API Keys**
 3. Cliquez sur **Create API Key**
-4. Donnez-lui un nom et sélectionnez **Full Access**
-5. Copiez la clé API générée
+4. Donnez-lui un nom et copiez la clé générée (commence par `re_`)
+5. Collez-la dans votre fichier `.env`
 
-### Valider votre adresse email
+### Vérifier votre domaine (recommandé pour production)
 
-1. Allez dans **Settings → Sender Authentication**
-2. Cliquez sur **Verify a Single Sender**
-3. Remplissez le formulaire avec vos informations
-4. Vérifiez votre email
+1. Allez dans **Domains**
+2. Ajoutez votre domaine
+3. Configurez les enregistrements DNS (SPF, DKIM, DMARC)
+4. Attendez la validation
 
 ---
 
@@ -530,7 +530,7 @@ SenderEmail/
 
 - ✅ .NET Framework 4.8 ou supérieur
 - ✅ Visual Studio 2019/2022 (ou compatible)
-- ✅ Compte SendGrid (gratuit - 100 emails/jour)
+- ✅ Compte Resend (gratuit - 3000 emails/mois)
 - ✅ Projet VB.NET
 
 ---
@@ -580,10 +580,10 @@ SenderEmail/
 
 1. **Asynchrone** : Utilisez toujours `Await` avec `EnvoyerEmailAsync`
 2. **Rate Limiting** : Ajoutez des pauses (`Task.Delay`) entre les envois en masse
-3. **Validation** : Validez votre email expéditeur dans SendGrid avant utilisation
+3. **Validation** : Validez votre domaine dans Resend avant utilisation en production
 4. **HTML** : Le paramètre `message` accepte du HTML complet
 5. **Signatures** : Utilisez `vbCrLf` ou `vbLf` pour les retours à la ligne
-6. **Sécurité** : Ne commitez jamais votre clé API dans le code source
+6. **Sécurité** : Ne committez jamais votre clé API dans le code source
 
 ---
 

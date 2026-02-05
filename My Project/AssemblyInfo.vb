@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 ' Passez en revue les valeurs des attributs de l'assembly
 
 <Assembly: AssemblyTitle("EmailSenderDLL")>
-<Assembly: AssemblyDescription("DLL pour envoi d'emails via SendGrid avec 7 types de templates (Info, Erreur, Urgence, Succes, Alerte, Avertissement, Notification), support CC/BCC, signatures personnalisables et pièces jointes")>
+<Assembly: AssemblyDescription("DLL pour envoi d'emails via Resend avec 7 types de templates (Info, Erreur, Urgence, Succes, Alerte, Avertissement, Notification), support CC/BCC, signatures personnalisables et pièces jointes")>
 <Assembly: AssemblyCompany("DAAM")>
 <Assembly: AssemblyProduct("EmailSenderDLL")>
 <Assembly: AssemblyCopyright("Copyright © DAAM 2025")>

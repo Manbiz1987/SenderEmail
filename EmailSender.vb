@@ -27,18 +27,18 @@ Public Enum TypeEmail
 End Enum
 
 ''' <summary>
-''' Classe pour envoyer des emails via SendGrid API
+''' Classe pour envoyer des emails via Resend API
 ''' </summary>
 Public Class EmailSender
     Private ReadOnly _apiKey As String
     Private ReadOnly _fromEmail As String
     Private ReadOnly _fromName As String
-    Private Const SENDGRID_API_URL As String = "https://api.sendgrid.com/v3/mail/send"
+    Private Const RESEND_API_URL As String = "https://api.resend.com/emails"
 
     ''' <summary>
     ''' Initialise une nouvelle instance de EmailSender
     ''' </summary>
-    ''' <param name="apiKey">Clé API SendGrid</param>
+    ''' <param name="apiKey">Clé API Resend</param>
     ''' <param name="fromEmail">Adresse email de l'expéditeur</param>
     ''' <param name="fromName">Nom affiché de l'expéditeur</param>
     Public Sub New(apiKey As String, fromEmail As String, fromName As String)
@@ -107,57 +107,7 @@ Public Class EmailSender
                     htmlContent = GenererHtmlNotification(sujet, message, signature, pieceJointes)
             End Select
 
-            ' Construction de la liste des destinataires
-            Dim personalizations As New List(Of Object)()
-            Dim toList As New List(Of Object) From {
-                New With {.email = destinataire}
-            }
-
-            ' Ajout des CC si présents
-            Dim ccList As List(Of Object) = Nothing
-            If cc IsNot Nothing AndAlso cc.Count > 0 Then
-                ccList = New List(Of Object)()
-                For Each emailCc In cc
-                    ccList.Add(New With {.email = emailCc})
-                Next
-            End If
-
-            ' Ajout des CCI si présents
-            Dim bccList As List(Of Object) = Nothing
-            If cci IsNot Nothing AndAlso cci.Count > 0 Then
-                bccList = New List(Of Object)()
-                For Each emailCci In cci
-                    bccList.Add(New With {.email = emailCci})
-                Next
-            End If
-
-            ' Construction de l'objet personalizations
-            Dim personalization As Object
-            If ccList IsNot Nothing AndAlso bccList IsNot Nothing Then
-                personalization = New With {
-                    .to = toList,
-                    .cc = ccList,
-                    .bcc = bccList
-                }
-            ElseIf ccList IsNot Nothing Then
-                personalization = New With {
-                    .to = toList,
-                    .cc = ccList
-                }
-            ElseIf bccList IsNot Nothing Then
-                personalization = New With {
-                    .to = toList,
-                    .bcc = bccList
-                }
-            Else
-                personalization = New With {
-                    .to = toList
-                }
-            End If
-
-            personalizations.Add(personalization)
-
-            ' Gestion des pièces jointes (fichiers réels)
+            ' Gestion des pièces jointes (fichiers réels) pour Resend
             Dim attachments As List(Of Object) = Nothing
             If fichiersAttaches IsNot Nothing AndAlso fichiersAttaches.Count > 0 Then
                 attachments = New List(Of Object)()
@@ -170,9 +120,7 @@ Public Class EmailSender
                             
                             attachments.Add(New With {
                                 .content = base64Content,
-                                .filename = fileName,
-                                .type = "application/octet-stream",
-                                .disposition = "attachment"
+                                .filename = fileName
                             })
                         End If
                     Catch ex As Exception
@@ -181,55 +129,43 @@ Public Class EmailSender
                 Next
             End If
 
-            ' Construction du payload JSON pour SendGrid
-            Dim payload As Object
+            ' Construction du payload JSON pour Resend avec Dictionary
+            Dim payload As New Dictionary(Of String, Object) From {
+                {"from", $"{_fromName} <{_fromEmail}>"},
+                {"to", New String() {destinataire}},
+                {"subject", sujet},
+                {"html", htmlContent}
+            }
+            
+            ' Ajout optionnel de CC
+            If cc IsNot Nothing AndAlso cc.Count > 0 Then
+                payload("cc") = cc.ToArray()
+            End If
+            
+            ' Ajout optionnel de BCC
+            If cci IsNot Nothing AndAlso cci.Count > 0 Then
+                payload("bcc") = cci.ToArray()
+            End If
+            
+            ' Ajout optionnel des attachments
             If attachments IsNot Nothing AndAlso attachments.Count > 0 Then
-                payload = New With {
-                    .personalizations = personalizations,
-                    .from = New With {
-                        .email = _fromEmail,
-                        .name = _fromName
-                    },
-                    .subject = sujet,
-                    .content = New Object() {
-                        New With {
-                            .type = "text/html",
-                            .value = htmlContent
-                        }
-                    },
-                    .attachments = attachments
-                }
-            Else
-                payload = New With {
-                    .personalizations = personalizations,
-                    .from = New With {
-                        .email = _fromEmail,
-                        .name = _fromName
-                    },
-                    .subject = sujet,
-                    .content = New Object() {
-                        New With {
-                            .type = "text/html",
-                            .value = htmlContent
-                        }
-                    }
-                }
+                payload("attachments") = attachments
             End If
 
             Dim jsonPayload As String = JsonConvert.SerializeObject(payload)
 
-            ' Envoi de la requête à SendGrid
+            ' Envoi de la requête à Resend
             Using client As New HttpClient()
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " & _apiKey)
                 
                 Dim content As New StringContent(jsonPayload, Encoding.UTF8, "application/json")
-                Dim response = Await client.PostAsync(SENDGRID_API_URL, content)
+                Dim response = Await client.PostAsync(RESEND_API_URL, content)
 
                 If response.IsSuccessStatusCode Then
                     Return True
                 Else
                     Dim errorContent = Await response.Content.ReadAsStringAsync()
-                    Console.WriteLine($"Erreur SendGrid [{response.StatusCode}]: {errorContent}")
+                    Console.WriteLine($"Erreur Resend [{response.StatusCode}]: {errorContent}")
                     Return False
                 End If
             End Using

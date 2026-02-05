@@ -3,11 +3,25 @@ Imports System.Collections.Generic
 Imports EmailSenderDLL
 
 Module TestNouvellesFonctionnalites
-    ' Configuration
-    Private Const API_KEY As String = "***REMOVED***"
-    Private Const FROM_EMAIL As String = "***REMOVED***"
-    Private Const FROM_NAME As String = "Tech Dev DAAM"
-    Private Const TO_EMAIL As String = "***REMOVED***"
+    ' Configuration - Chargée depuis .env
+    Private ReadOnly API_KEY As String
+    Private ReadOnly FROM_EMAIL As String
+    Private ReadOnly FROM_NAME As String
+    Private ReadOnly TO_EMAIL As String
+    
+    ' Constructeur statique
+    Sub New()
+        Try
+            EnvConfig.LoadEnvFile()
+            API_KEY = EnvConfig.GetRequired("RESEND_API_KEY")
+            FROM_EMAIL = EnvConfig.GetRequired("RESEND_FROM_EMAIL")
+            FROM_NAME = EnvConfig.GetRequired("RESEND_FROM_NAME")
+            TO_EMAIL = EnvConfig.GetOptional("TEST_TO_EMAIL", "test@example.com")
+        Catch ex As Exception
+            Console.WriteLine("❌ ERREUR: " & ex.Message)
+            Environment.Exit(1)
+        End Try
+    End Sub
 
     Sub Main()
         Console.WriteLine("═══════════════════════════════════════════════════════════")
@@ -98,7 +112,7 @@ Module TestNouvellesFonctionnalites
             Dim sujet = "📎 Test Email avec Pièce Jointe"
             Dim message = "Ceci est un email de test avec une <strong>pièce jointe réelle</strong>." &
                          vbCrLf & vbCrLf &
-                         "Le fichier joint est encodé en Base64 et envoyé via l'API SendGrid." &
+                         "Le fichier joint est encodé en Base64 et envoyé via l'API Resend." &
                          vbCrLf & vbCrLf &
                          "📄 Détails de la pièce jointe :" &
                          vbCrLf & "• Nom : fichier-test.txt" &

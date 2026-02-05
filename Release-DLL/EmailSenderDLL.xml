@@ -6,6 +6,28 @@ EmailSenderDLL
 </name>
 </assembly>
 <members>
+<member name="T:EmailSenderDLL.EnvConfig">
+ <summary>
+ Gestionnaire de configuration sécurisée pour EmailSenderDLL
+ Charge les variables d'environnement depuis le fichier .env
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EnvConfig.LoadEnvFile(System.String)">
+ <summary>
+ Charge les variables d'environnement depuis le fichier .env
+ </summary>
+ <param name="envFilePath">Chemin optionnel vers le fichier .env (par défaut: racine du projet)</param>
+</member>
+<member name="M:EmailSenderDLL.EnvConfig.GetRequired(System.String)">
+ <summary>
+ Récupère une variable d'environnement avec validation
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EnvConfig.GetOptional(System.String,System.String)">
+ <summary>
+ Récupère une variable d'environnement optionnelle
+ </summary>
+</member>
 <member name="T:EmailSenderDLL.TypeEmail">
  <summary>
  Types d'emails disponibles avec templates HTML distincts
@@ -34,14 +56,14 @@ EmailSenderDLL
 </member>
 <member name="T:EmailSenderDLL.EmailSender">
  <summary>
- Classe pour envoyer des emails via SendGrid API
+ Classe pour envoyer des emails via Resend API
  </summary>
 </member>
 <member name="M:EmailSenderDLL.EmailSender.#ctor(System.String,System.String,System.String)">
  <summary>
  Initialise une nouvelle instance de EmailSender
  </summary>
- <param name="apiKey">Clé API SendGrid</param>
+ <param name="apiKey">Clé API Resend</param>
  <param name="fromEmail">Adresse email de l'expéditeur</param>
  <param name="fromName">Nom affiché de l'expéditeur</param>
 </member>
@@ -93,6 +115,105 @@ EmailSenderDLL
 <member name="M:EmailSenderDLL.EmailSender.GenererHtmlNotification(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
  <summary>
  Génère le HTML pour un email de type Notification (Violet)
+ </summary>
+</member>
+<member name="T:EmailSenderDLL.EmailSenderSMTP">
+ <summary>
+ Classe pour envoyer des emails via SMTP (Gmail, Outlook, etc.)
+ Alternative à EmailSender (Resend API) pour plus de flexibilité
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.#ctor(System.String,System.Int32,System.String,System.String,System.String,System.String,System.Boolean)">
+ <summary>
+ Initialise une nouvelle instance de EmailSenderSMTP avec configuration manuelle
+ </summary>
+ <param name="smtpHost">Serveur SMTP (ex: smtp.gmail.com)</param>
+ <param name="smtpPort">Port SMTP (ex: 587 pour TLS, 465 pour SSL)</param>
+ <param name="username">Nom d'utilisateur SMTP</param>
+ <param name="password">Mot de passe SMTP (ou mot de passe d'application)</param>
+ <param name="fromEmail">Adresse email de l'expéditeur</param>
+ <param name="fromName">Nom affiché de l'expéditeur</param>
+ <param name="enableSsl">Activer SSL/TLS (par défaut True)</param>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.#ctor">
+ <summary>
+ Initialise une nouvelle instance de EmailSenderSMTP avec configuration automatique depuis .env
+ Charge automatiquement les paramètres SMTP depuis les variables d'environnement
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.EnvoyerEmailAsync(System.String,System.String,System.String,System.Nullable{EmailSenderDLL.TypeEmail},System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String})">
+ <summary>
+ Envoie un email avec configuration automatique depuis .env (tous les paramètres optionnels)
+ </summary>
+ <param name="destinataire">Destinataire (optionnel si défini dans EMAIL_TO)</param>
+ <param name="sujet">Sujet (optionnel si défini dans EMAIL_SUBJECT)</param>
+ <param name="message">Message HTML (requis)</param>
+ <param name="typeEmail">Type d'email (optionnel, utilise EMAIL_TYPE de .env si Nothing)</param>
+ <param name="signature">Signature (optionnel, utilise EMAIL_SIGNATURE de .env si Nothing)</param>
+ <param name="pieceJointes">Noms de pièces jointes à afficher (optionnel)</param>
+ <param name="fichiersAttaches">Chemins des fichiers à attacher (optionnel, utilise EMAIL_ATTACHMENTS de .env si Nothing)</param>
+ <param name="cc">Destinataires en copie (optionnel, utilise EMAIL_CC de .env si Nothing)</param>
+ <param name="cci">Destinataires en copie cachée (optionnel, utilise EMAIL_BCC de .env si Nothing)</param>
+ <returns>True si l'email est envoyé avec succès, False sinon</returns>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.EnvoyerEmailCompletAsync(System.String,System.String,System.String,EmailSenderDLL.TypeEmail,System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String})">
+ <summary>
+ Envoie un email avec template personnalisé via SMTP (méthode complète)
+ </summary>
+ <param name="destinataire">Adresse email du destinataire principal</param>
+ <param name="sujet">Sujet de l'email</param>
+ <param name="message">Contenu du message (HTML autorisé)</param>
+ <param name="typeEmail">Type d'email (Info, Erreur, Urgence, Succes, etc.)</param>
+ <param name="signature">Signature personnalisée (optionnel)</param>
+ <param name="pieceJointes">Liste des noms de pièces jointes à afficher (optionnel)</param>
+ <param name="fichiersAttaches">Liste des chemins complets des fichiers à attacher (optionnel)</param>
+ <param name="cc">Liste des destinataires en copie (optionnel)</param>
+ <param name="cci">Liste des destinataires en copie cachée (optionnel)</param>
+ <returns>True si l'email est envoyé avec succès, False sinon</returns>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.GenererHtmlInfo(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le template HTML pour un email de type Info (Bleu)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.GenererHtmlErreur(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le template HTML pour un email de type Erreur (Rouge)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.GenererHtmlUrgence(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le template HTML pour un email de type Urgence (Orange)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.GenererHtmlSucces(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le template HTML pour un email de type Succès (Vert)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.GenererHtmlAlerte(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le template HTML pour un email de type Alerte (Rouge foncé)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.GenererHtmlAvertissement(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le template HTML pour un email de type Avertissement (Jaune)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.GenererHtmlNotification(System.String,System.String,System.String,System.Collections.Generic.List{System.String})">
+ <summary>
+ Génère le template HTML pour un email de type Notification (Violet)
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.GenererTemplateBase(System.String,System.String,System.String,System.Collections.Generic.List{System.String},System.String,System.String,System.String)">
+ <summary>
+ Génère le template HTML de base pour tous les types d'emails
+ </summary>
+</member>
+<member name="M:EmailSenderDLL.EmailSenderSMTP.AjusterCouleur(System.String,System.Double)">
+ <summary>
+ Ajuste la luminosité d'une couleur hexadécimale
  </summary>
 </member>
 <member name="M:EmailSenderDLL.TestNouvellesFonctionnalites.TestEmailSucces(EmailSenderDLL.EmailSender)">
